@@ -1,0 +1,164 @@
+sql assignment
+
+
+ create table salesperson (
+    snum int,
+    sname varchar(255),
+    city varchar(255),
+    comm float(53)
+    );
+
+
+mysql> insert into salesperson values(1001,'Peel','London',0.12);
+
+mysql> select * from salesperson;
++------+-------+--------+------+
+| snum | sname | city   | comm |
++------+-------+--------+------+
+| 1001 | Peel  | London | 0.12 |
++------+-------+--------+------+
+
+mysql> insert into salesperson values(1002,'Serres','Sanjose',0.13);
+mysql> insert into salesperson values(1004,'Motika','London',0.11);
+mysql> insert into salesperson
+    -> values(1007,'Rifkin','Barcelona',0.15);
+mysql> insert into salesperson
+    -> values(1003,'Axelrod','Newyork',0.10);
+mysql> select * from salesperson;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    | 0.12 |
+| 1002 | Serres  | Sanjose   | 0.13 |
+| 1004 | Motika  | London    | 0.11 |
+| 1007 | Rifkin  | Barcelona | 0.15 |
+| 1003 | Axelrod | Newyork   |  0.1 |
++------+---------+-----------+------+
+
+
+mysql> create table customer (
+    -> cnum int,
+    -> cname varchar(255),
+    -> city varchar(255),
+    -> snum int
+    -> );
+insert into customer values(2002,'Giovanni','Rome',1003);
+mysql> insert into customer
+    -> values(2003,'Liu','Sanjose',1002);
+mysql> insert into customer values(2004,'Grass','Berlin',1002);
+mysql> insert into customer values(2006,'Clemens','London',1001);
+mysql> insert into customer values(2008,'Cisneros','Sanjose',1007);
+mysql> insert into customer values(2007,'Pereira','Rome',1004);
+mysql> select * from customer;
++------+----------+---------+------+
+| cnum | cname    | city    | snum |
++------+----------+---------+------+
+| 2001 | Hoffman  | london  | 1001 |
+| 2002 | Giovanni | Rome    | 1003 |
+| 2003 | Liu      | Sanjose | 1002 |
+| 2004 | Grass    | Berlin  | 1002 |
+| 2006 | Clemens  | London  | 1001 |
+| 2008 | Cisneros | Sanjose | 1007 |
+| 2007 | Pereira  | Rome    | 1004 |
++------+----------+---------+------+
+
+ CREATE TABLE ORDERS (
+    -> ONUM INT,
+    -> AMT FLOAT(53),
+    -> ODate DATE,
+    -> CNUM INT,
+    -> SNUM INT
+    -> );
+
+insert into orders values(3001,18.69,'1990-10-03',2008,1007);
+mysql> insert into orders values(3003,767.19,'1990-10-03',2001,1001);
+mysql> insert into orders values(3002,1900.10,'1990-10-03',2007,1004);
+mysql> insert into orders values(3005,5160.45,'1990-10-03',2003,1002);
+mysql> insert into orders values(3006,1098.16,'1990-10-03',2008,1007);
+mysql> insert into orders values(3009,1713.23,'1990-10-04',2002,1003);
+mysql> insert into orders values(3007,75.75,'1990-10-04',2004,1002);
+mysql> insert into orders values(3008,4273.00,'1990-10-05',2006,1001);
+mysql> select * from orders;
++------+---------+------------+------+------+
+| ONUM | AMT     | ODate      | CNUM | SNUM |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3002 |  1900.1 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 |    4273 | 1990-10-05 | 2006 | 1001 |
++------+---------+------------+------+------+
+
+-----------------------------------------------------------------------------------------------------
+1) Count the number of Salesperson whose name begin with ‘a’/’A’.
+
+
+ select * from salesperson
+    -> WHERE sname like 'A%'or 'a%' order by sname;
++------+---------+---------+------+
+| snum | sname   | city    | comm |
++------+---------+---------+------+
+| 1003 | Axelrod | Newyork |  0.1 |
++------+---------+---------+------+
+
+
+2)Display all the Salesperson whose all orders worth is more than Rs. 2000.
+ select amt,snum from orders
+    -> where amt>2000;
++---------+------+
+| amt     | snum |
++---------+------+
+| 5160.45 | 1002 |
+|    4273 | 1001 |
++---------+------+
+3)Count the number of Salesperson belonging to Newyork.
+ select * from salesperson
+    -> WHERE city like 'newyork%';
++------+---------+---------+------+
+| snum | sname   | city    | comm |
++------+---------+---------+------+
+| 1003 | Axelrod | Newyork |  0.1 |
++------+---------+---------+------+
+
+4) Display the number of Salespeople belonging to London and belonging to Paris.
+ select count(city)as number_of_people
+    -> from salesperson
+    -> where city like 'london%'
+    -> ;
++------------------+
+| number_of_people |
++------------------+
+|                2 |
++------------------+
+
+
+select count(city)as number_of_people
+    -> from salesperson
+    -> where city like 'paris'
+    -> ;
++------------------+
+| number_of_people |
++------------------+
+|                0 |
++------------------+
+
+5)Display the number of orders taken by each Salesperson and their date of orders.
+ select odate,onum,sname
+    -> from orders o,salesperson s
+    -> where o.snum=s.snum;
++------------+------+---------+
+| odate      | onum | sname   |
++------------+------+---------+
+| 1990-10-03 | 3001 | Rifkin  |
+| 1990-10-03 | 3003 | Peel    |
+| 1990-10-03 | 3002 | Motika  |
+| 1990-10-03 | 3005 | Serres  |
+| 1990-10-03 | 3006 | Rifkin  |
+| 1990-10-04 | 3009 | Axelrod |
+| 1990-10-04 | 3007 | Serres  |
+| 1990-10-05 | 3008 | Peel    |
++------------+------+---------+
+
